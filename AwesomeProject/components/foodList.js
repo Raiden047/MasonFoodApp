@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity,FlatList} from 'react-native';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
 
 import { scale } from './scaling' 
 import CustomText from './customText'
@@ -7,7 +9,7 @@ import CustomText from './customText'
 const filter = ['Popular','Recent','Speed','Price'];
 const list = filter.map((String) =>
     <TouchableOpacity style={{marginHorizontal: 20}} key={String}>
-        <Text style={{fontSize: scale(14), fontFamily: 'Roboto', fontWeight: "bold"}}>{String}</Text>
+        <CustomText fontFamily='Roboto' fontWeight='Bold' style={{fontSize: scale(14)}}>{String}</CustomText>
     </TouchableOpacity>
 );
 
@@ -27,16 +29,19 @@ const formatData = (data, numColumns) => {
   };
 
 class FoodList extends Component {
+    constructor(props) {
+        super(props);
+    }
     
     renderRow = ({ item }) => {
         return (
-            <TouchableOpacity style={{marginRight: scale(40), marginTop: scale(15), marginBottom: scale(35) }}>
+            <TouchableOpacity style={{marginRight: scale(40), marginTop: scale(15), marginBottom: scale(35) }} onPress={() => this.props.navigation.navigate('DishInfo')}>
                 <View style={{width: scale(160), flexDirection:'column', justifyContent: "center", alignItems: "center"}}>
                     <Image 
                         style={{width: '100%', height: scale(120), borderRadius: 20}}
                         source={{uri: item.pic}}
                     />
-                    <Text style={{fontFamily: "Roboto", fontSize: scale(20), marginTop: 8, color: "#133C52"}}>{item.name}</Text>
+                    <CustomText fontFamily='Roboto' fontWeight='Regular' style={{ fontSize: scale(20), marginTop: 8, color: "#133C52"}}>{item.name}</CustomText>
                     <View style={{width: "100%", height: scale(25)}}>
                         <View style={styles.cardLow}>
                             <CustomText fontFamily="Roboto" fontWeight="Bold" style={{fontSize: scale(10), color: '#DEDEDE'}}>{item.price}</CustomText>

@@ -6,6 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 
 import HomeScreen from './HomeScreen'
+import DishInfoScreen from './DishInfoScreen'
 import StatusOSbar from './components/statusBar'
 import CustomText from './components/customText'
 import {scale} from './components/scaling'
@@ -60,6 +61,13 @@ const MyStackNavigator = createStackNavigator(
   {
     Home : { 
       screen: HomeScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false
+      }
+    },
+    DishInfo : {
+      screen: DishInfoScreen,
       navigationOptions: {
         header: null,
         gesturesEnabled: false

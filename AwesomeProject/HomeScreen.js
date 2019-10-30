@@ -49,7 +49,7 @@ class HomeScreen extends Component {
 
           <ResturantSlider />
           
-          <FoodList />
+          <FoodList navigation={this.props.navigation} />
             
         </View>
       </View>
