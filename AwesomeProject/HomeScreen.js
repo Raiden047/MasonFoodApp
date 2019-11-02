@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions, StyleSheet, Text, View, Image, TouchableOpacity,  Platform, StatusBar} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 
 import StatusOSbar from './components/statusBar'
 import ResturantSlider from './components/resturantSlider'
@@ -12,13 +12,20 @@ import Images from './components/images'
 
 const userData = require('./data/user_info.json');
 
-const { width, height } = Dimensions.get('window');
-//console.log(width + ' ' + height);
-
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = userData;
+    this.state = {
+      userData: userData,
+      list: require('./data/blazePizzaDishes.json')
+    };
+    this.updateList = this.updateList.bind(this);
+  }
+
+  updateList(placeData){
+    this.setState({
+      list: placeData
+    })
   }
   
   render() {
@@ -37,7 +44,7 @@ class HomeScreen extends Component {
             
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <CustomText fontFamily='Raleway' fontWeight='Bold' style={styles.greet}>
-                Feeling Hungry {this.state.first_name}?
+                Feeling Hungry {this.state.userData.first_name}?
               </CustomText>
             </View>
             

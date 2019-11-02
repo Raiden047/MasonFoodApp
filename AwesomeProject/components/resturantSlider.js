@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Image, TouchableOpacity,FlatList} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, FlatList, AsyncStorage} from 'react-native';
 
 import { scale } from './scaling'
+import Places from '../data/places'
 
 //const userData = require('./data/user_info.json');
-const placesData = require('../data/places.json');
+//const placesData = require('../data/places.json');
 
 class ResturantSlider extends Component {
+  changePlace = (item) => {
+    var data = AsyncStorage.setItem('placeData', JSON.stringify(item.data), () => {
+      //console.log(item.name);
+    });
+  }
 
-  renderRow = ({ item }) => {
+  renderRow = ({ item }) => {  
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => this.changePlace(item)}>
         <View style={styles.container}>
           <Image 
             style={styles.logo}
@@ -30,7 +36,7 @@ class ResturantSlider extends Component {
                 pagingEnabled={false}
                 showsHorizontalScrollIndicator={false}
                 style={{ marginHorizontal: scale(20), marginTop: scale(24)}}
-                data={placesData.places}
+                data={Places}
                 renderItem={this.renderRow}
                 keyExtractor={(item) => item.name}
             />

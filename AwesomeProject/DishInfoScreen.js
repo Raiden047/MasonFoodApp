@@ -5,16 +5,22 @@ import { Rating, AirbnbRating  } from 'react-native-elements'
 import StatusOSbar from './components/statusBar'
 
 export default class DishInfo extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
+ 
   render() {
+    const dish = this.props.navigation.getParam('dishInfo');
     return(
       <View style={styles.MainContainer}>
         <StatusOSbar />
+        <Text>{dish.name}</Text>
         <AirbnbRating 
-          reviews={["","","","",""]}
+          count={5}
+          reviews={["","","","",""]} 
+          defaultRating={0}
+          size={50}
         />
       </View>
     );
