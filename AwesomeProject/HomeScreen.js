@@ -9,6 +9,7 @@ import FoodList from './components/foodList'
 import {scale} from './components/scaling'
 
 import Images from './components/images'
+import ResturantContextProvider from './contexts/resturantContext'
 
 const userData = require('./data/user_info.json');
 
@@ -19,14 +20,14 @@ class HomeScreen extends Component {
       userData: userData,
       list: require('./data/blazePizzaDishes.json')
     };
-    this.updateList = this.updateList.bind(this);
+    //this.updateList = this.updateList.bind(this);
   }
-
+  /*
   updateList(placeData){
     this.setState({
       list: placeData
     })
-  }
+  }*/
   
   render() {
     return (
@@ -54,9 +55,10 @@ class HomeScreen extends Component {
             <SearchBar />
           </View>
 
-          <ResturantSlider />
-          
+          <ResturantContextProvider>
+          <ResturantSlider />          
           <FoodList navigation={this.props.navigation} />
+          </ResturantContextProvider>
             
         </View>
       </View>

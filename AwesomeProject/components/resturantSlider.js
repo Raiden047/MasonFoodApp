@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, TouchableOpacity, FlatList, AsyncStorage} from
 
 import { scale } from './scaling'
 import Places from '../data/places'
+import {ResturantContext, ResturantContextConsumer} from '../contexts/resturantContext'
 
 //const userData = require('./data/user_info.json');
 //const placesData = require('../data/places.json');
@@ -14,9 +15,18 @@ class ResturantSlider extends Component {
     });
   }
 
+  static contextType = ResturantContext;
+  /*
+  changeResturant = (item) => {
+    this.setState({
+      dishes: item.data
+    })
+  }*/
+
   renderRow = ({ item }) => {  
+    const {changeResturant} = this.context;
     return (
-      <TouchableOpacity onPress={() => this.changePlace(item)}>
+      <TouchableOpacity onPress={() => changeResturant(item.data.dishes)}>
         <View style={styles.container}>
           <Image 
             style={styles.logo}

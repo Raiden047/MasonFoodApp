@@ -3,9 +3,10 @@ import { StyleSheet, View, Image, TouchableOpacity, FlatList, AsyncStorage} from
 
 import { scale } from './scaling' 
 import CustomText from './customText'
+import {ResturantContext, ResturantContextConsumer} from '../contexts/resturantContext'
 
 const filter = ['Popular','Recent','Speed','Price'];
-const list = filter.map((String) =>
+const listF = filter.map((String) =>
     <TouchableOpacity style={{marginHorizontal: 20}} key={String}>
         <CustomText fontFamily='Roboto' fontWeight='Bold' style={{fontSize: scale(14)}}>{String}</CustomText>
     </TouchableOpacity>
@@ -30,10 +31,10 @@ class FoodList extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            list: {},
+            list: require('../data/blazePizzaDishes.json')
         }
     }
-
+    /*
     componentDidMount() {
         var load = AsyncStorage.getItem('placeData').then(
             (place) => {
@@ -49,7 +50,7 @@ class FoodList extends Component {
         this.setState({ list: place});
         console.log(this.state.list)
         
-    }
+    }*/
     
     renderRow = ({ item }) => {
         return (
@@ -77,21 +78,25 @@ class FoodList extends Component {
         )
     }
 
+    static contextType = ResturantContext;
     render() {
+        const {list} = this.context;
+        console.log(list);
         return (
             <View style={styles.bottom}>
-                <View style={styles.filter}>{list}</View>
+                <View style={styles.filter}>{listF}</View>
                 <FlatList
                     vertical
                     pagingEnabled={false}
                     showsVerticalScrollIndicator={false}
                     style={{marginHorizontal: scale(25), marginTop: scale(10)}}
-                    data={formatData(foodData.dishes, numColumns)}
+                    data={formatData(this.state.list.dishes, numColumns)}
                     renderItem={this.renderRow}
                     keyExtractor={(item) => item.name}
                     numColumns={numColumns}
-                    //extraData={this.updateFoodList()}
+                    extraData={list}
                 />
+
             </View>
         );
     }
