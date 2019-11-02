@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 
 import StatusOSbar from './components/statusBar'
-import ResturantSlider from './components/resturantSlider'
+//import ResturantSlider from './components/resturantSlider'
 import SearchBar from './components/searchBar'
 import CustomText from './components/customText'
 import FoodList from './components/foodList'
 import {scale} from './components/scaling'
 
 import Images from './components/images'
-import ResturantContextProvider from './contexts/resturantContext'
 
 const userData = require('./data/user_info.json');
 
@@ -20,14 +19,7 @@ class HomeScreen extends Component {
       userData: userData,
       list: require('./data/blazePizzaDishes.json')
     };
-    //this.updateList = this.updateList.bind(this);
   }
-  /*
-  updateList(placeData){
-    this.setState({
-      list: placeData
-    })
-  }*/
   
   render() {
     return (
@@ -54,11 +46,8 @@ class HomeScreen extends Component {
           <View style={{marginTop: scale(24), justifyContent: 'center', alignItems: 'center'}}>
             <SearchBar />
           </View>
-
-          <ResturantContextProvider>
-          <ResturantSlider />          
+       
           <FoodList navigation={this.props.navigation} />
-          </ResturantContextProvider>
             
         </View>
       </View>

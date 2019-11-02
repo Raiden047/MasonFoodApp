@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, FlatList, AsyncStorage} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, FlatList} from 'react-native';
 
 import { scale } from './scaling' 
 import CustomText from './customText'
-import {ResturantContext, ResturantContextConsumer} from '../contexts/resturantContext'
+import Places from '../data/places'
 
 const filter = ['Popular','Recent','Speed','Price'];
 const listF = filter.map((String) =>
@@ -12,7 +12,7 @@ const listF = filter.map((String) =>
     </TouchableOpacity>
 );
 
-const foodData = require('../data/blazePizzaDishes.json');
+var foodData = require('../data/blazePizzaDishes.json').dishes;
 const numColumns = 2;
 
 const formatData = (data, numColumns) => {
@@ -31,27 +31,10 @@ class FoodList extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            list: require('../data/blazePizzaDishes.json')
+            list: require('../data/blazePizzaDishes.json').dishes
         }
     }
-    /*
-    componentDidMount() {
-        var load = AsyncStorage.getItem('placeData').then(
-            (place) => {
-                //this.setState({ list: place});
-                //console.log(place.data);
-                this.updateFoodList(place)
-                //return place.data;
-            }    
-        );
-    }
 
-    updateFoodList = (place) => {
-        this.setState({ list: place});
-        console.log(this.state.list)
-        
-    }*/
-    
     renderRow = ({ item }) => {
         return (
             <TouchableOpacity style={styles.container} onPress={() => this.props.navigation.navigate('DishInfo',{ dishInfo: item })}>
@@ -78,23 +61,53 @@ class FoodList extends Component {
         )
     }
 
-    static contextType = ResturantContext;
+    changePlace = (item) => {
+        this.setState({
+            list: item.data.dishes
+        });
+        //console.log(this.state.list);
+      }
+    renderRowSlider = ({ item }) => {  
+      //const {changeResturant} = this.context;
+      return (
+        <TouchableOpacity onPress={() => this.changePlace(item)}>
+          <View style={sliderStyles.container}>
+            <Image 
+              style={sliderStyles.logo}
+              source={{uri: item.logo}}
+            />
+          </View>  
+        </TouchableOpacity>
+      )
+    }
+
     render() {
-        const {list} = this.context;
-        console.log(list);
         return (
             <View style={styles.bottom}>
+                
+                <View style={{width: "100%", height: scale(85)}}>
+                    <FlatList
+                        horizontal
+                        pagingEnabled={false}
+                        showsHorizontalScrollIndicator={false}
+                        style={{ marginHorizontal: scale(20), marginTop: scale(24)}}
+                        data={Places}
+                        renderItem={this.renderRowSlider}
+                        keyExtractor={(item) => item.name}
+                    />
+                </View>
+
                 <View style={styles.filter}>{listF}</View>
                 <FlatList
                     vertical
                     pagingEnabled={false}
                     showsVerticalScrollIndicator={false}
                     style={{marginHorizontal: scale(25), marginTop: scale(10)}}
-                    data={formatData(this.state.list.dishes, numColumns)}
+                    data={this.state.list}
                     renderItem={this.renderRow}
                     keyExtractor={(item) => item.name}
                     numColumns={numColumns}
-                    extraData={list}
+                    extraData={this.state.list}
                 />
 
             </View>
@@ -154,3 +167,18 @@ const styles = StyleSheet.create({
         right: 0
     }
 });
+
+const sliderStyles = StyleSheet.create({
+    container: {
+        width: scale(60), 
+        height: scale(60), 
+        borderRadius: 15, 
+        backgroundColor: "grey", 
+        marginRight: scale(15), 
+    },
+    logo: {
+        width: "100%", 
+        height: "100%", 
+        borderRadius: 15
+    }
+  });

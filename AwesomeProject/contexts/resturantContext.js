@@ -1,14 +1,11 @@
 import React, {Component, createContext} from 'react';
 
-export const ResturantContext = createContext({
-    list: '',
-    updateList: () => {},
-});
+export const ResturantContext = createContext({});
 
 
 class ResturantContextProvider extends Component {
     state = {
-        list: require('../data/blazePizzaDishes.json'),
+        list: require('../data/blazePizzaDishes.json').dishes,
     };
 
     changeResturant = (item) => {
@@ -16,6 +13,8 @@ class ResturantContextProvider extends Component {
           list: item
         })
         //console.log(this.state.list);
+        const usersDataDictionary = keyBy(item, 'name');
+        console.log(usersDataDictionary);
     }
 
     render() {
@@ -28,5 +27,3 @@ class ResturantContextProvider extends Component {
 }
 
 export default ResturantContextProvider;
-
-export const ResturantContextConsumer = ResturantContext.Consumer;
