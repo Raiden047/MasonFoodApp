@@ -1,12 +1,14 @@
 {
+
+
     "dishes": [ 
         {
-            "name": "Meat Eater",
-            "pic": "https://s3-media2.fl.yelpcdn.com/bphoto/ZZpvkvgD-HM0TnJqUGgBSA/o.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "4.0",
+            "name": "Chow Mein",
+            "pic": "https://scontent-iad3-1.xx.fbcdn.net/v/t31.0-8/20934075_10155811125843814_4291722303795394769_o.jpg?_nc_cat=111&_nc_oc=AQnwIxxCysPpJHtVm7Yo_y5oAbA17Z91arIvtgH6gKF2j_H_6mbENnlOUBaf-JBgQ94&_nc_ht=scontent-iad3-1.xx&oh=c65b1f4f268ff0f265c8bd49fdb21fdb&oe=5E5670D1",
+            "category": "Asian",
+            "discription": "Stir-fried wheat noodles with onions, celery and cabbage.",
+            "price": "$3.2",
+            "rating": "3",
             "reviews": [
                 {
                     "id": "1",
@@ -17,12 +19,12 @@
             ]
         },
         {
-            "name": "BBQ chicken",
-            "pic": "https://media-cdn.tripadvisor.com/media/photo-s/06/89/6f/26/blaze-pizza.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "4.0",
+            "name": "Orange Chicken",
+            "pic": "https://scontent-iad3-1.xx.fbcdn.net/v/l/t31.0-8/23593776_10156061686898814_2986711634235726173_o.jpg?_nc_cat=109&_nc_oc=AQmvv0pIwImPkWLShBf5H6GvT8FpWFI7b9z40wAPkURgcfhl9gmW2yxvtwA7q7ZtpdA&_nc_ht=scontent-iad3-1.xx&oh=a59d5bcb47f5c1993a570749d145f1b6&oe=5E4DA878",
+            "category": "Asian",
+            "discription": "Our signature dish. Crispy chicken wok-tossed in a sweet and spicy orange sauce.",
+            "price": "$4.2",
+            "rating": "3",
             "reviews": [
                 {
                     "id": "1",
@@ -33,12 +35,12 @@
             ]
         },
         {
-            "name": "Hot Link",
-            "pic": "https://www.chewboom.com/wp-content/uploads/2018/09/Blaze-Pizza-Introduces-New-Hot-Link-Pizza-678x381.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "4.5",
+            "name": "Kung Pan Chicken",
+            "pic": "https://www.readyseteat.com/sites/g/files/qyyrlu501/files/uploadedImages/img_8272_30982.jpg",
+            "category": "Asian",
+            "discription": "A Szechwan-inspired dish with chicken, peanuts and vegetables, finished with chili peppers.",
+            "price": "$4.2",
+            "rating": "",
             "reviews": [
                 {
                     "id": "1",
@@ -49,12 +51,12 @@
             ]
         },
         {
-            "name": "Red Vine",
-            "pic": "https://www.gannett-cdn.com/-mm-/8c61189310aed317518358540f6fbe7d1f3f2328/c=0-0-4500-3375/local/-/media/2016/03/10/Louisville/B9321272207Z.1_20160310123248_000_GGFDN0G4M.1-0.jpg?width=534&height=401&fit=crop",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "5.0",
+            "name": "Shanghai Angus steak",
+            "pic": "http://couponsavingfamily.com/wp-content/uploads/2012/04/Free-Panda-Express-Shanghai-Angus-Steak.jpg",
+            "category": "Asian",
+            "discription": "Angus steak wok-seared with fresh string beans, onions and mushrooms in a savory sauce.",
+            "price": "$5.4",
+            "rating": "",
             "reviews": [
                 {
                     "id": "1",
@@ -65,34 +67,34 @@
             ]
         },
         {
-            "name": "Veg Out",
-            "pic": "https://www.getflavor.com/wp-content/uploads/2018/04/65-Veg-Out.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "4.9",
+            "name": "Honey Walnut shrimp",
+            "pic": "https://dinnerthendessert.com/wp-content/uploads/2016/03/Panda-Express-Honey-Walnut-Shrimp-2.jpg",
+            "category": "Asian",
+            "discription": "Large tempura-battered shrimp, wok-tossed in a honey sauce and topped with glazed walnuts.",
+            "price": "$4.2",
+            "rating": "4",
             "reviews": [
                 {
                     "id": "1",
                     "text": "",
-                    "rating": 4,
-                    "votes": 23
+                    "rating": 3,
+                    "votes": 22
                 }
             ]
         },
         {
-            "name": "S'More Pie",
-            "pic": "https://s3-media2.fl.yelpcdn.com/bphoto/B3vOXiPx4-48GJJqXTY-Zw/o.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$2.00",
-            "rating":"4.5",
+            "name": "Chicken Egg Roll",
+            "pic": "https://freerecipenetwork.com/wp-content/uploads/2013/12/chickeneggrolls.jpg",
+            "category": "Asian",
+            "discription": "Cabbage, carrots, green onions and chicken in a crispy wonton wrapper.",
+            "price": "$1.95",
+            "rating":"3",
             "reviews": [
                 {
                     "id": "1",
                     "text": "",
-                    "rating": 4,
-                    "votes": 23
+                    "rating": 3,
+                    "votes": 22
                 }
             ]
         }

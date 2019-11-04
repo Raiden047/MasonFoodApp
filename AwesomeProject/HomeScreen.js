@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import { StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 
 import StatusOSbar from './components/statusBar'
@@ -12,7 +12,7 @@ import Images from './components/images'
 
 const userData = require('./data/user_info.json');
 
-class HomeScreen extends Component {
+class HomeScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

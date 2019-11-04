@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, FlatList} from 'react-native';
+import React, {Component, PureComponent} from 'react';
+import { StyleSheet, View, Image, TouchableOpacity, FlatList, TouchableWithoutFeedback} from 'react-native';
 
 import { scale } from './scaling' 
 import CustomText from './customText'
@@ -27,7 +27,7 @@ const formatData = (data, numColumns) => {
     return data;
 };
 
-class FoodList extends Component {
+class FoodList extends PureComponent {
     constructor(props) {
         super(props);
         this.state = { 
@@ -65,10 +65,9 @@ class FoodList extends Component {
         this.setState({
             list: item.data.dishes
         });
-        //console.log(this.state.list);
-      }
+    }
+
     renderRowSlider = ({ item }) => {  
-      //const {changeResturant} = this.context;
       return (
         <TouchableOpacity onPress={() => this.changePlace(item)}>
           <View style={sliderStyles.container}>

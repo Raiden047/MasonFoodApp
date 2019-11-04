@@ -1,11 +1,27 @@
 {
     "dishes": [ 
         {
-            "name": "Chick Eater",
-            "pic": "https://s3-media2.fl.yelpcdn.com/bphoto/ZZpvkvgD-HM0TnJqUGgBSA/o.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$?.??",
+            "name": "Chick-fil-A Chicken Sandwich",
+            "pic": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Entree/Entree%20PDP/_0000s_0005_NEW_Stack620_PDP_Chick-Fil-A-Sandwich_1085.png",
+            "category": "Sandwish",
+            "discription": "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips. Gluten-free bun or multigrain bun also available at an additional cost.",
+            "price": "$3.05",
+            "rating": "3.5",
+            "reviews": [
+                {
+                    "id": "1",
+                    "text": "",
+                    "rating": 4,
+                    "votes": 23
+                }
+            ]
+        },
+        {
+            "name": "Chick-fil-A Chicken Deluxe Sandwich",
+            "pic": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Entree/Entree%20PDP/_0000s_0004_NEWStack6200001CFAPDPDeluxeSandwich1085png.png",
+            "category": "Sandwich",
+            "discription": "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips, Green Leaf lettuce, tomato and American cheese. Gluten-free bun or multigrain bun also available at an additional cost.",
+            "price": "$3.65",
             "rating": "4.0",
             "reviews": [
                 {
@@ -17,27 +33,11 @@
             ]
         },
         {
-            "name": "New chicken",
-            "pic": "https://media-cdn.tripadvisor.com/media/photo-s/06/89/6f/26/blaze-pizza.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "4.0",
-            "reviews": [
-                {
-                    "id": "1",
-                    "text": "",
-                    "rating": 4,
-                    "votes": 23
-                }
-            ]
-        },
-        {
-            "name": "Cold Link",
-            "pic": "https://www.chewboom.com/wp-content/uploads/2018/09/Blaze-Pizza-Introduces-New-Hot-Link-Pizza-678x381.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
+            "name": "Spicy Chicken Sandwich",
+            "pic": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Entree/Entree%20PDP/_0000s_0005_NEW_Stack620_PDP_Chick-Fil-A-Sandwich_1085.png",
+            "category": "Sandwish",
+            "discription": "A boneless breast of chicken seasoned with a spicy blend of peppers, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips. Gluten-free bun or multigrain bun also available at an additional cost",
+            "price": "$3.05",
             "rating": "4.5",
             "reviews": [
                 {
@@ -49,12 +49,12 @@
             ]
         },
         {
-            "name": "Red Vine",
-            "pic": "https://www.gannett-cdn.com/-mm-/8c61189310aed317518358540f6fbe7d1f3f2328/c=0-0-4500-3375/local/-/media/2016/03/10/Louisville/B9321272207Z.1_20160310123248_000_GGFDN0G4M.1-0.jpg?width=534&height=401&fit=crop",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "5.0",
+            "name": "Chick-fil-A Nuggets",
+            "pic": "https://www.cfacdn.com/img/order/menu/Online/Entrees/nuggets_8ct_PDP.png",
+            "category": "Sides",
+            "discription": "Bite-sized pieces of tender all breast meat chicken, seasoned to perfection, hand-breaded and pressure cooked in 100% refined peanut oil.",
+            "price": "$3.05",
+            "rating": "4.0",
             "reviews": [
                 {
                     "id": "1",
@@ -65,34 +65,34 @@
             ]
         },
         {
-            "name": "Veg Out",
-            "pic": "https://www.getflavor.com/wp-content/uploads/2018/04/65-Veg-Out.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$8.45",
-            "rating": "4.9",
+            "name": "Chick-n-Strips",
+            "pic": "https://www.cfacdn.com/img/order/menu/Online/Entrees/strips_3ct_PDP.png",
+            "category": "Sides",
+            "discription": "Made from the most tender part of the chicken breast, Chick-n-Strips™ are marinated in special seasonings, hand-breaded and pressure cooked to perfection in 100% refined peanut oil. They are mouth watering and generously portioned. Available in 3-count or 4-count entrées with choice of dipping sauce.1",
+            "price": "$3.35",
+            "rating": "3.5",
             "reviews": [
                 {
                     "id": "1",
                     "text": "",
-                    "rating": 4,
-                    "votes": 23
+                    "rating": 3,
+                    "votes": 22
                 }
             ]
         },
         {
-            "name": "S'More Pie",
-            "pic": "https://s3-media2.fl.yelpcdn.com/bphoto/B3vOXiPx4-48GJJqXTY-Zw/o.jpg",
-            "category": "pizaa",
-            "discription": "",
-            "price": "$2.00",
-            "rating":"4.5",
+            "name": "Waffle Potato Fries",
+            "pic": "https://www.cfacdn.com/img/order/menu/Online/Sides%26treats/mediumWaffleFries_PDP.png",
+            "category": "Sides",
+            "discription": "Waffle-shaped potatoes with the skin. Cooked in canola oil until crispy outside and tender inside.",
+            "price": "$1.65",
+            "rating":"3.5",
             "reviews": [
                 {
                     "id": "1",
                     "text": "",
-                    "rating": 4,
-                    "votes": 23
+                    "rating": 3.5,
+                    "votes": 22
                 }
             ]
         }

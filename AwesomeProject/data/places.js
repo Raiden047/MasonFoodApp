@@ -7,12 +7,12 @@ const Places = [
     {
         name: "Panda Express",
         logo: "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/pandalogo_2016.png",
-        data: require("./chickfa")
+        data: require("./pandaexpressdata")
     },
     {
         name: "Einstein Bros. Bagels",
         logo: "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/einsteinslogo.png",
-        data: require("./chickfa")
+        data: require("./einsteinbagel")
     },
     {
         name: "Chick-fil-A",
@@ -22,12 +22,12 @@ const Places = [
     {
         name: "Steak n Shake",
         logo: "https://adc3ef35f321fe6e725a-fb8aac3b3bf42afe824f73b606f0aa4c.ssl.cf1.rackcdn.com/tenantlogos/13231.png",
-        data: require("./chickfa")
+        data: require("./steakandshake")
     },
     {
-        name: "Dunkin’ Donuts",
-        logo: "https://i7.pngguru.com/preview/131/720/950/dunkin-donuts-tea-starbucks-donut.jpg",
-        data: require("./chickfa")
+        name: "Freshens",
+        logo: "https://adc3ef35f321fe6e725a-fb8aac3b3bf42afe824f73b606f0aa4c.ssl.cf1.rackcdn.com/tenantlogos/20.png",
+        data: require("./freshen")
     },
     {
         name: "Chipotle",
