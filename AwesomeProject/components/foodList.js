@@ -12,9 +12,8 @@ const listF = filter.map((String) =>
     </TouchableOpacity>
 );
 
-var foodData = require('../data/blazePizzaDishes.json').dishes;
 const numColumns = 2;
-
+/*
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -25,7 +24,7 @@ const formatData = (data, numColumns) => {
     }
 
     return data;
-};
+};*/
 
 class FoodList extends PureComponent {
     constructor(props) {
@@ -82,7 +81,7 @@ class FoodList extends PureComponent {
 
     render() {
         return (
-            <View style={styles.bottom}>
+            <View style={{flex: 1}}>
                 
                 <View style={{width: "100%", height: scale(85)}}>
                     <FlatList
@@ -96,6 +95,7 @@ class FoodList extends PureComponent {
                     />
                 </View>
 
+                <View style={styles.bottom}>
                 <View style={styles.filter}>{listF}</View>
                 <FlatList
                     vertical
@@ -107,8 +107,11 @@ class FoodList extends PureComponent {
                     keyExtractor={(item) => item.name}
                     numColumns={numColumns}
                     extraData={this.state.list}
+                    removeClippedSubviews={true}
+                    initialNumToRender={4}
+                    updateCellsBatchingPeriod={10}
                 />
-
+                </View>
             </View>
         );
     }
