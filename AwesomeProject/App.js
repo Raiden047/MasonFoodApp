@@ -4,18 +4,29 @@ import { StyleSheet, Image, View, Text } from 'react-native';
 import { createDrawerNavigator, DrawerNavigatorItems} from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
+import * as firebase from 'firebase';
+import ApiKeys from './constants/ApiKeys'
 
 import HomeScreen from './HomeScreen'
 import DishInfoScreen from './DishInfoScreen'
-import StatusOSbar from './components/statusBar'
-import CustomText from './components/customText'
-import {scale} from './components/scaling'
+//import StatusOSbar from './components/statusBar'
+//import CustomText from './components/customText'
+//import {scale} from './components/scaling'
+import {StatusOSbar, CustomText, scale, Images} from './components'
 
-import Images from './components/images'
+//import Images from './components/images'
 
 const userData = require('./data/user_info.json');
 
 class App extends Component {  
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoadingComplete: false
+    }
+
+    if (!firebase.apps.length) { firebase.initializeApp(ApiKeys.FirebaseConfig); }
+  }
 
   render() {
     return (

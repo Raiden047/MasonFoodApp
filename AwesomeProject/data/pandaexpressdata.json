@@ -8,7 +8,7 @@
             "category": "Asian",
             "discription": "Stir-fried wheat noodles with onions, celery and cabbage.",
             "price": "$3.2",
-            "rating": "3",
+            "rating": "3.0",
             "reviews": [
                 {
                     "id": "1",
@@ -24,7 +24,7 @@
             "category": "Asian",
             "discription": "Our signature dish. Crispy chicken wok-tossed in a sweet and spicy orange sauce.",
             "price": "$4.2",
-            "rating": "3",
+            "rating": "3.0",
             "reviews": [
                 {
                     "id": "1",
@@ -40,7 +40,7 @@
             "category": "Asian",
             "discription": "A Szechwan-inspired dish with chicken, peanuts and vegetables, finished with chili peppers.",
             "price": "$4.2",
-            "rating": "",
+            "rating": "3.0",
             "reviews": [
                 {
                     "id": "1",
@@ -56,7 +56,7 @@
             "category": "Asian",
             "discription": "Angus steak wok-seared with fresh string beans, onions and mushrooms in a savory sauce.",
             "price": "$5.4",
-            "rating": "",
+            "rating": "3.5",
             "reviews": [
                 {
                     "id": "1",
@@ -72,7 +72,7 @@
             "category": "Asian",
             "discription": "Large tempura-battered shrimp, wok-tossed in a honey sauce and topped with glazed walnuts.",
             "price": "$4.2",
-            "rating": "4",
+            "rating": "4.0",
             "reviews": [
                 {
                     "id": "1",
@@ -88,7 +88,7 @@
             "category": "Asian",
             "discription": "Cabbage, carrots, green onions and chicken in a crispy wonton wrapper.",
             "price": "$1.95",
-            "rating":"3",
+            "rating":"3.0",
             "reviews": [
                 {
                     "id": "1",

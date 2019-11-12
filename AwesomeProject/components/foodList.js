@@ -1,5 +1,5 @@
 import React, {Component, PureComponent} from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, FlatList, TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, FlatList} from 'react-native';
 
 import { scale } from './scaling' 
 import CustomText from './customText'
