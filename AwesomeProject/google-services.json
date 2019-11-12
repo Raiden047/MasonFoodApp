@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1009462507431",
+    "firebase_url": "https://masonfoodapp.firebaseio.com",
+    "project_id": "masonfoodapp",
+    "storage_bucket": "masonfoodapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009462507431:android:fed38a9d29895c2bdee882",
+        "android_client_info": {
+          "package_name": "com.gmu.masonfoodapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009462507431-9gthfpv0br835j2bucrjjict9p9ddo8c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuM7vVxZfFxK1X-5ayu7lIoApdxorv17g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009462507431-9gthfpv0br835j2bucrjjict9p9ddo8c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

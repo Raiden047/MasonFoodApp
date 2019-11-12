@@ -1,9 +1,13 @@
 //need to npm install react-naviation drawer and react naviagtion
 import React, {Component} from 'react';
-import { StyleSheet, Image, View, Text } from 'react-native';
+import { StyleSheet, Image, View, Text, Button } from 'react-native';
 import { createDrawerNavigator, DrawerNavigatorItems} from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
+
+//import * as GoogleSignIn from 'expo-google-sign-in';
+//import * as Expo from 'expo';
+import * as Google from 'expo-google-app-auth';
 import * as firebase from 'firebase';
 import ApiKeys from './constants/ApiKeys'
 
@@ -21,21 +25,62 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isLoadingComplete: false
+      isLoadingComplete: false,
+      signedIn: false,
+      name: "",
+      photoUrl: ""
     }
 
     if (!firebase.apps.length) { firebase.initializeApp(ApiKeys.FirebaseConfig); }
   }
 
+  signIn = async () => {
+    try {
+      const result = await Google.logInAsync({
+        behavoir: 'system',
+        androidClientId:
+          "1009462507431-khpn1hiufi0e2ha34p2hc7u2goflgr8d.apps.googleusercontent.com",
+        //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
+        scopes: ["profile", "email"]
+      })
+
+      if (result.type === "success") {
+        this.setState({
+          signedIn: true,
+          name: result.user.name,
+          photoUrl: result.user.photoUrl
+        })
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error", e)
+    }
+  }
+
   render() {
     return (
-
-      <MyApp />
+      <View style={{flex:1}}>
+        {this.state.signedIn ? (
+          <MyApp name={this.state.name} photoUrl={this.state.photoUrl} />
+        ) : (
+          <LoginPage signIn={this.signIn} />
+        )}
+      </View>
     );
   }
 }
 
 export default App;
+
+const LoginPage = props => {
+  return (
+    <View>
+      <Text style={styles.header}>Sign In With Google</Text>
+      <Button title="Sign in with Google" onPress={() => props.signIn()} />
+    </View>
+  )
+}
 
 const SlidePanel = props => {
   state = userData;
@@ -156,5 +201,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: scale(15),
     textAlign: 'center'
+  },
+  header: {
+    fontSize: 25
   }
 });

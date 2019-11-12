@@ -10,3 +10,6 @@ export default {
         measurementId: "G-1LZWY7XRF2"
     },
 }
+
+//for google auth sha-1 fingerprint enter this in the jdk/bin folder in command prompt
+//keytool  -list -v -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore -alias androiddebugkey -storepass android -keypass android

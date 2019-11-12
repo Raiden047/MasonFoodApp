@@ -24,7 +24,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gmu.masonfoodapp",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.1009462507431-3russs08sidpkatlctqk99i1ee0eluo4"
+        }
+      }
+    },
+    "android": {
+      "package": "com.gmu.masonfoodapp",
+      "googleServicesFile": "./google-services.json"
+  }
   }
 }
