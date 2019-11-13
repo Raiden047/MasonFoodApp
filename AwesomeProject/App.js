@@ -1,6 +1,6 @@
 //need to npm install react-naviation drawer and react naviagtion
 import React, {Component} from 'react';
-import { StyleSheet, Image, View, Text, Button } from 'react-native';
+import { StyleSheet, Image, View, Text, Button, YellowBox } from 'react-native';
 import { createDrawerNavigator, DrawerNavigatorItems} from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
@@ -21,6 +21,17 @@ import {scale} from './components/scaling'
 import Images from './components/images'
 
 const userData = require('./data/user_info.json');
+
+import _ from 'lodash';
+
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
+
 
 class App extends Component {  
   constructor(props){

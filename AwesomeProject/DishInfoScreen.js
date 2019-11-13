@@ -1,6 +1,7 @@
 import React, {Component, Fragment, PureComponent} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import { AirbnbRating, Icon } from 'react-native-elements'
+import * as firebase from 'firebase';
 
 import BottomSheet from 'reanimated-bottom-sheet'
 import {FlatList} from 'react-native-gesture-handler'
@@ -17,7 +18,33 @@ export default class DishInfo extends PureComponent {
     this.state ={
       Dish_Rating: 0,
       Max_Rating: 5,
-      data: this.props.navigation.getParam('dishInfo').reviews
+      reviews: []
+    }
+  }
+
+  componentWillMount = () => {
+    try{
+      const reviews = [];
+      var placeKey = this.props.navigation.getParam('placeKey');
+      var dishKey = this.props.navigation.getParam('dishKey');
+      //console.log("p: " + placeKey + " d: " + dishKey);
+      firebase.database().ref(`places/${placeKey}/dishes/${dishKey}/reviews/`).once('value', snapshot => {
+        //console.log(snapshot.val());
+        snapshot.forEach(data => {
+            reviews.push({ 
+              name: data.val().name, 
+              profile_image: data.val().profile_image, 
+              key: data.key,
+              rating: data.val().rating,
+              text: data.val().text,
+              votes: data.val().votes
+          });
+        });
+        this.setState({reviews: reviews});
+      });
+    }
+    catch(error){
+      console.log(error);
     }
   }
 
@@ -30,14 +57,16 @@ export default class DishInfo extends PureComponent {
   )
 
   renderContent = () => {
-    const dish = this.props.navigation.getParam('dishInfo');
+    //const dish = this.props.navigation.getParam('dishInfo');
+    //var dishKey = this.props.navigation.getParam('dishKey');
+    //console.log(dishKey);
     return (
       <View style={styles.panel}>
         <Fragment>
           <FlatList
             style={{flexGrow: 1}}
             showsVerticalScrollIndicator={false}
-            data={dish.reviews}
+            data={this.state.reviews}
             renderItem={this.renderItem}
             keyExtractor={item => item.key}
             initialNumToRender={2}
@@ -50,10 +79,8 @@ export default class DishInfo extends PureComponent {
   }
 
   renderItem = ({ item }) => {
-    var placeKey = this.props.navigation.getParam('placeKey');
-    var dishKey = this.props.navigation.getParam('dishKey');
-
-    console.log("pkey:" + placeKey + " dkey:" + dishKey + " rKey: " + item.key);
+    placeKey = this.props.navigation.getParam('placeKey');
+    dishKey = this.props.navigation.getParam('dishKey');
     return (
       <Review 
         name={item.name} 

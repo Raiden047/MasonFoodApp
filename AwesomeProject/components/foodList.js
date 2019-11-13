@@ -13,18 +13,6 @@ const listF = filter.map((String) =>
 );
 
 const numColumns = 2;
-/*
-const formatData = (data, numColumns) => {
-    const numberOfFullRows = Math.floor(data.length / numColumns);
-
-    let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
-    while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-    data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
-    numberOfElementsLastRow++;
-    }
-
-    return data;
-};*/
 
 class FoodList extends PureComponent {
     constructor(props) {
@@ -39,26 +27,15 @@ class FoodList extends PureComponent {
 
     componentWillMount = () => {
         try {
-            this.retrieveData();
-          }
-          catch (error) {
-            console.log(error);
-          }
-    }
-
-    retrieveData = async () => {
-        try {
             const places = [];
-            firebase.database().ref("/places/").on('value', snapshot => {
+            firebase.database().ref("/places/").once('value', snapshot => {
                 snapshot.forEach(data => {
                     places.push({ name: data.val().name, logo: data.val().logo, key: data.key });
                 });
                 //console.log(places);
                 this.setState({places: places});
             });
-            firebase.database().ref("/places/0/").on('value', snapshot => {
-                this.setState({list: snapshot.val().dishes});
-            });
+            this.changePlace(0);
         }
         catch (error) {
             console.log(error);
@@ -66,8 +43,7 @@ class FoodList extends PureComponent {
     }
 
     nav = (item) => {
-        this.setState({dishKey: item.key});
-        this.props.navigation.navigate('DishInfo',{ dishInfo: item, placeKey: this.state.placeKey, dishKey: this.state.dishKey });
+        this.props.navigation.navigate('DishInfo',{ dishInfo: item, placeKey: this.state.placeKey, dishKey: item.key });
     }
 
     renderRow = ({ item }) => {
@@ -99,18 +75,29 @@ class FoodList extends PureComponent {
         )
     }
 
-    changePlace = (item) => {
-        firebase.database().ref(`places/${item.key}/`).on('value', snapshot => {
-            const foods = snapshot.val().dishes;
+    changePlace = (key) => {
+        firebase.database().ref(`places/${key}/`).once('value', snapshot => {
+            const foods = [];
+            //console.log(snapshot.child('dishes/').key);
+            snapshot.child('dishes/').forEach(data => {
+                foods.push({ 
+                    name: data.val().name, 
+                    pic: data.val().pic, 
+                    key: data.key, 
+                    discription: data.val().discription,
+                    price: data.val().price,
+                    rating: data.val().rating
+                });
+            });
             this.setState({list: foods});
-            this.setState({placeKey: item.key});
+            this.setState({placeKey: key});
         });
         //console.log("pkey:" + this.state.placeKey);
     }
 
     renderRowSlider = ({ item }) => {  
       return (
-        <TouchableOpacity onPress={() => this.changePlace(item)}>
+        <TouchableOpacity onPress={() => this.changePlace(item.key)}>
           <View style={sliderStyles.container}>
             <Image 
               style={sliderStyles.logo}
@@ -133,7 +120,7 @@ class FoodList extends PureComponent {
                         style={{ marginHorizontal: scale(20), marginTop: scale(24)}}
                         data={this.state.places}
                         renderItem={this.renderRowSlider}
-                        keyExtractor={(item) => item.name}
+                        keyExtractor={(item) => item.key}
                     />
                 </View>
 

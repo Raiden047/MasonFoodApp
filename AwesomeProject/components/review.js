@@ -18,40 +18,49 @@ class Review extends PureComponent {
     }
 
     upVote = () => {
+        var votes = this.state.votes;
         if(!this.state.upVoted) {
-            this.state.downVoted === true ? this.setState({ votes: this.state.votes + 2 }) : this.setState({ votes: this.state.votes + 1 });
+            this.state.downVoted === true ? votes += 2 : votes += 1;
             this.setState({ upVoted: true });
             this.setState({ downVoted: false });
         }
         else{
-            this.setState({ votes: this.state.votes - 1 });
+            votes -= 1;
             this.setState({ upVoted: false });
         }
+        
+        this.updateVotes(votes);
+        this.setState({votes: votes});
     }
 
     downVote = () => {
+        var votes = this.state.votes;
         if(!this.state.downVoted) {
-            this.state.upVoted === true ? this.setState({ votes: this.state.votes - 2 }) : this.setState({ votes: this.state.votes - 1 });
+            this.state.upVoted === true ? votes -= 2 : votes -= 1;
             this.setState({ downVoted: true });
             this.setState({ upVoted: false });
         }
         else{
-            this.setState({ votes: this.state.votes + 1 });
+            votes += 1;
             this.setState({ downVoted: false });
         }
+
+        this.updateVotes(votes);
+        this.setState({votes: votes});
     }
 
-    updateVotes = () => {
-        console.log("pkey:" + this.props.placeKey + " dkey:" + this.props.dishKey + " rKey: " + this.props.reviewKey);
-        firebase.database().ref(`places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}`).on('value', snapshot => {
-            const votes = snapshot.val().votes;
-            this.setState({votes: votes});
+    updateVotes = (votes) => {
+        //console.log(votes);
+        firebase.database().ref(`places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}/`).update({
+            votes: votes
         });
     }
 
     componentDidMount(){
-        this.setState({votes: this.props.votes});
-        //this.updateVotes();
+        //console.log("pkey:" + this.props.placeKey + " dkey:" + this.props.dishKey + " rKey: " + this.props.reviewKey);
+        firebase.database().ref(`places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}/`).once('value', snapshot => {
+            this.setState({votes: snapshot.val().votes});
+        });
     }
 
     setName = (name) => {
