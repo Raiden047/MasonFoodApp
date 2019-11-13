@@ -1,9 +1,9 @@
 import React, {Component, PureComponent} from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, FlatList} from 'react-native';
+import * as firebase from 'firebase';
 
 import { scale } from './scaling' 
 import CustomText from './customText'
-import Places from '../data/places'
 
 const filter = ['Popular','Recent','Speed','Price'];
 const listF = filter.map((String) =>
@@ -30,13 +30,52 @@ class FoodList extends PureComponent {
     constructor(props) {
         super(props);
         this.state = { 
-            list: require('../data/blazePizzaDishes.json').dishes
+            list: [],
+            places: [],
+            placeKey: 0,
+            dishKey: -1,
         }
     }
 
+    componentWillMount = () => {
+        try {
+            this.retrieveData();
+          }
+          catch (error) {
+            console.log(error);
+          }
+    }
+
+    retrieveData = async () => {
+        try {
+            const places = [];
+            firebase.database().ref("/places/").on('value', snapshot => {
+                snapshot.forEach(data => {
+                    places.push({ name: data.val().name, logo: data.val().logo, key: data.key });
+                });
+                //console.log(places);
+                this.setState({places: places});
+            });
+            firebase.database().ref("/places/0/").on('value', snapshot => {
+                this.setState({list: snapshot.val().dishes});
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    nav = (item) => {
+        this.setState({dishKey: item.key});
+        this.props.navigation.navigate('DishInfo',{ dishInfo: item, placeKey: this.state.placeKey, dishKey: this.state.dishKey });
+    }
+
     renderRow = ({ item }) => {
+        //this.setState({dishKey: item.key});
         return (
-            <TouchableOpacity style={styles.container} onPress={() => this.props.navigation.navigate('DishInfo',{ dishInfo: item })}>
+            <TouchableOpacity 
+                style={styles.container} 
+                onPress={() => this.nav(item)}>
                 <View style={styles.innerContainer}>
                     <Image 
                         style={{width: '100%', height: scale(120), borderRadius: 20}}
@@ -61,9 +100,12 @@ class FoodList extends PureComponent {
     }
 
     changePlace = (item) => {
-        this.setState({
-            list: item.data.dishes
+        firebase.database().ref(`places/${item.key}/`).on('value', snapshot => {
+            const foods = snapshot.val().dishes;
+            this.setState({list: foods});
+            this.setState({placeKey: item.key});
         });
+        //console.log("pkey:" + this.state.placeKey);
     }
 
     renderRowSlider = ({ item }) => {  
@@ -89,7 +131,7 @@ class FoodList extends PureComponent {
                         pagingEnabled={false}
                         showsHorizontalScrollIndicator={false}
                         style={{ marginHorizontal: scale(20), marginTop: scale(24)}}
-                        data={Places}
+                        data={this.state.places}
                         renderItem={this.renderRowSlider}
                         keyExtractor={(item) => item.name}
                     />
@@ -104,7 +146,7 @@ class FoodList extends PureComponent {
                     style={{marginHorizontal: scale(25), marginTop: scale(10)}}
                     data={this.state.list}
                     renderItem={this.renderRow}
-                    keyExtractor={(item) => item.name}
+                    keyExtractor={(item) => item.key}
                     numColumns={numColumns}
                     extraData={this.state.list}
                     removeClippedSubviews={true}

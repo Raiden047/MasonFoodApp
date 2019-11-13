@@ -8,6 +8,7 @@ import { createAppContainer } from 'react-navigation';
 //import * as GoogleSignIn from 'expo-google-sign-in';
 //import * as Expo from 'expo';
 import * as Google from 'expo-google-app-auth';
+//import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin'
 import * as firebase from 'firebase';
 import ApiKeys from './constants/ApiKeys'
 
@@ -28,11 +29,90 @@ class App extends Component {
       isLoadingComplete: false,
       signedIn: false,
       name: "",
+      first_name: "",
+      last_name: "",
       photoUrl: ""
     }
 
     if (!firebase.apps.length) { firebase.initializeApp(ApiKeys.FirebaseConfig); }
   }
+
+  componentDidMount = () => {
+    /*
+    firebase.database().ref('user/').once('value', function (snapshot) {
+      //console.log(snapshot.val());
+    });*/
+  }
+
+  isUserEqual = (googleUser, firebaseUser) => {
+    if (firebaseUser) {
+      var providerData = firebaseUser.providerData;
+      for (var i = 0; i < providerData.length; i++) {
+        if (
+          providerData[i].providerId ===
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+          providerData[i].uid === googleUser.uid
+        ) {
+          // We don't need to reauth the Firebase connection.
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  onSignIn = (googleUser) => {
+    //console.log('Google Auth Response', googleUser);
+    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+    var unsubscribe = firebase.auth().onAuthStateChanged(
+      function(firebaseUser) {
+        unsubscribe();
+        // Check if we are already signed-in Firebase with the correct user.
+        if (!this.isUserEqual(googleUser, firebaseUser)) {
+          // Build Firebase credential with the Google ID token.
+          var credential = firebase.auth.GoogleAuthProvider.credential(
+            googleUser.idToken,
+            googleUser.accessToken
+          );
+          // Sign in with credential from the Google user.
+          firebase.auth().signInWithCredential(credential).then(function(result) {
+              console.log('user signed in ');
+              if (result.additionalUserInfo.isNewUser) {
+                firebase
+                  .database()
+                  .ref('/users/' + result.user.uid)
+                  .set({
+                    gmail: result.user.email,
+                    profile_picture: result.additionalUserInfo.profile.picture,
+                    first_name: result.additionalUserInfo.profile.given_name,
+                    last_name: result.additionalUserInfo.profile.family_name,
+                    created_at: Date.now()
+                  })
+                  .then(function(snapshot) {
+                    // console.log('Snapshot', snapshot);
+                  });
+              } else {
+                firebase.database().ref('/users/' + result.user.uid).update({
+                    last_logged_in: Date.now()
+                  });
+              }
+            })
+            .catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // ...
+            });
+        } else {
+          console.log('User already signed-in Firebase.');
+        }
+      }.bind(this)
+    );
+  };
 
   signIn = async () => {
     try {
@@ -40,7 +120,7 @@ class App extends Component {
         behavoir: 'system',
         androidClientId:
           "1009462507431-khpn1hiufi0e2ha34p2hc7u2goflgr8d.apps.googleusercontent.com",
-        //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
+        iosClientId: "1009462507431-kbi6pn012c9gue233a6npdeoikkhujfu.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       })
 
@@ -48,8 +128,11 @@ class App extends Component {
         this.setState({
           signedIn: true,
           name: result.user.name,
+          first_name: result.user.givenName,
+          last_name: result.user.familyName,
           photoUrl: result.user.photoUrl
         })
+        this.onSignIn(result);
       } else {
         console.log("cancelled")
       }
@@ -57,27 +140,40 @@ class App extends Component {
       console.log("error", e)
     }
   }
-
+  
+  render(){
+    return (
+      <MyApp />
+    )
+  }
+  /*
   render() {
     return (
       <View style={{flex:1}}>
         {this.state.signedIn ? (
-          <MyApp name={this.state.name} photoUrl={this.state.photoUrl} />
+          <MyApp name={this.state.first_name} photoUrl={this.state.photoUrl} />
         ) : (
           <LoginPage signIn={this.signIn} />
         )}
       </View>
     );
-  }
+  }*/
 }
 
 export default App;
 
 const LoginPage = props => {
   return (
-    <View>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text style={styles.header}>Sign In With Google</Text>
-      <Button title="Sign in with Google" onPress={() => props.signIn()} />
+      <Button
+        title="Sign in with Google" 
+        onPress={() => props.signIn()}
+        //size={GoogleSigninButton.Size.Wide}
+        //color={GoogleSigninButton.Color.Dark}
+        //disabled={this.state.isSigninInProgress}
+      >
+      </Button>
     </View>
   )
 }

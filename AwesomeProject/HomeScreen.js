@@ -16,10 +16,36 @@ class HomeScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      userData: userData,
-      list: require('./data/blazePizzaDishes.json')
+      userData: userData
     };
   }
+  /*
+  componentDidMount(){
+    firebase.database().ref('places/').on('value', function (snapshot) {
+      snapshot.forEach(function(data) {
+        let item = (data.val());
+        console.log("place name: " + item.name + " , logo:" + item.logo);
+      });
+      //let data = snapshot.val();
+      //let items = Object.values(data);
+      //this.setState({items});
+      
+      const places = [];
+      snapshot.forEach((item) => {
+        const place = {
+          name: item.name,
+          logo: item.logo
+        };
+        //place.id = doc.id;
+        places.push(place);
+      });
+      
+      const places = _.map(snapshot.val(), (name) => {
+        return {name}
+      });
+      //console.log(items);
+    });
+  }*/
   
   render() {
     return (

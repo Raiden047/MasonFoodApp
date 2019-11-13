@@ -39,9 +39,10 @@ export default class DishInfo extends PureComponent {
             showsVerticalScrollIndicator={false}
             data={dish.reviews}
             renderItem={this.renderItem}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.key}
             initialNumToRender={2}
             maxToRenderPerBatch={1}
+            ListEmptyComponent={this.listEmptyComponent}
           />
         </Fragment>
       </View>
@@ -49,10 +50,35 @@ export default class DishInfo extends PureComponent {
   }
 
   renderItem = ({ item }) => {
+    var placeKey = this.props.navigation.getParam('placeKey');
+    var dishKey = this.props.navigation.getParam('dishKey');
+
+    console.log("pkey:" + placeKey + " dkey:" + dishKey + " rKey: " + item.key);
     return (
-      <Review name={item.name} image={item.profile_image} rating={item.rating} text={item.text} votes={item.votes}></Review>
+      <Review 
+        name={item.name} 
+        image={item.profile_image} 
+        rating={item.rating} 
+        text={item.text} 
+        votes={item.votes}
+        placeKey={placeKey}
+        dishKey={dishKey}
+        reviewKey={item.key}
+      >
+      </Review>
     )
   }
+
+  listEmptyComponent = () => {
+    return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+              style={{width: scale(156), height: scale(150)}}
+              source={{uri: 'http://img.imgur.com/yBCpwMa.png'}} 
+            />
+        </View>
+    )
+}
 
  
   render() {

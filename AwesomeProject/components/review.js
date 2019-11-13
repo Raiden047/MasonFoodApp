@@ -1,6 +1,7 @@
 import React, {Component, PureComponent} from 'react';
 import {StyleSheet, View, Image, Text} from 'react-native';
 import { Icon } from 'react-native-elements';
+import * as firebase from 'firebase';
 
 import {scale} from './scaling'
 import CustomText from './customText'
@@ -40,8 +41,17 @@ class Review extends PureComponent {
         }
     }
 
+    updateVotes = () => {
+        console.log("pkey:" + this.props.placeKey + " dkey:" + this.props.dishKey + " rKey: " + this.props.reviewKey);
+        firebase.database().ref(`places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}`).on('value', snapshot => {
+            const votes = snapshot.val().votes;
+            this.setState({votes: votes});
+        });
+    }
+
     componentDidMount(){
         this.setState({votes: this.props.votes});
+        //this.updateVotes();
     }
 
     setName = (name) => {
@@ -65,8 +75,6 @@ class Review extends PureComponent {
         const profileImage = this.setImage(this.props.image);
         const rating = this.setRating(this.props.rating);
         const text = this.setText(this.props.text);
-        //const votes = this.setVotes(this.props.votes);
-        //const allProps = Object.assign({}, this.props, { style: style });
         return (
             <View style={{flexDirection: 'row', width: scale(390), marginVertical: 10}}>
                 <Image 
