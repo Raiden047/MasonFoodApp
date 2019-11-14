@@ -5,13 +5,10 @@ import { createDrawerNavigator, DrawerNavigatorItems} from 'react-navigation-dra
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 
-//import * as GoogleSignIn from 'expo-google-sign-in';
-//import * as Expo from 'expo';
-import * as Google from 'expo-google-app-auth';
-//import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin'
 import * as firebase from 'firebase';
 import ApiKeys from './constants/ApiKeys'
 
+import SignInScreen from './SignInScreen'
 import HomeScreen from './HomeScreen'
 import DishInfoScreen from './DishInfoScreen'
 import StatusOSbar from './components/statusBar'
@@ -23,6 +20,7 @@ import Images from './components/images'
 const userData = require('./data/user_info.json');
 
 import _ from 'lodash';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 const _console = _.clone(console);
@@ -37,7 +35,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isLoadingComplete: false,
+      loading: true,
+      authenticated: false,
       signedIn: false,
       name: "",
       first_name: "",
@@ -47,110 +46,6 @@ class App extends Component {
 
     if (!firebase.apps.length) { firebase.initializeApp(ApiKeys.FirebaseConfig); }
   }
-
-  componentDidMount = () => {
-    /*
-    firebase.database().ref('user/').once('value', function (snapshot) {
-      //console.log(snapshot.val());
-    });*/
-  }
-
-  isUserEqual = (googleUser, firebaseUser) => {
-    if (firebaseUser) {
-      var providerData = firebaseUser.providerData;
-      for (var i = 0; i < providerData.length; i++) {
-        if (
-          providerData[i].providerId ===
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-          providerData[i].uid === googleUser.uid
-        ) {
-          // We don't need to reauth the Firebase connection.
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  onSignIn = (googleUser) => {
-    //console.log('Google Auth Response', googleUser);
-    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
-    var unsubscribe = firebase.auth().onAuthStateChanged(
-      function(firebaseUser) {
-        unsubscribe();
-        // Check if we are already signed-in Firebase with the correct user.
-        if (!this.isUserEqual(googleUser, firebaseUser)) {
-          // Build Firebase credential with the Google ID token.
-          var credential = firebase.auth.GoogleAuthProvider.credential(
-            googleUser.idToken,
-            googleUser.accessToken
-          );
-          // Sign in with credential from the Google user.
-          firebase.auth().signInWithCredential(credential).then(function(result) {
-              console.log('user signed in ');
-              if (result.additionalUserInfo.isNewUser) {
-                firebase
-                  .database()
-                  .ref('/users/' + result.user.uid)
-                  .set({
-                    gmail: result.user.email,
-                    profile_picture: result.additionalUserInfo.profile.picture,
-                    first_name: result.additionalUserInfo.profile.given_name,
-                    last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now()
-                  })
-                  .then(function(snapshot) {
-                    // console.log('Snapshot', snapshot);
-                  });
-              } else {
-                firebase.database().ref('/users/' + result.user.uid).update({
-                    last_logged_in: Date.now()
-                  });
-              }
-            })
-            .catch(function(error) {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              // The email of the user's account used.
-              var email = error.email;
-              // The firebase.auth.AuthCredential type that was used.
-              var credential = error.credential;
-              // ...
-            });
-        } else {
-          console.log('User already signed-in Firebase.');
-        }
-      }.bind(this)
-    );
-  };
-
-  signIn = async () => {
-    try {
-      const result = await Google.logInAsync({
-        behavoir: 'system',
-        androidClientId:
-          "1009462507431-khpn1hiufi0e2ha34p2hc7u2goflgr8d.apps.googleusercontent.com",
-        iosClientId: "1009462507431-kbi6pn012c9gue233a6npdeoikkhujfu.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      })
-
-      if (result.type === "success") {
-        this.setState({
-          signedIn: true,
-          name: result.user.name,
-          first_name: result.user.givenName,
-          last_name: result.user.familyName,
-          photoUrl: result.user.photoUrl
-        })
-        this.onSignIn(result);
-      } else {
-        console.log("cancelled")
-      }
-    } catch (e) {
-      console.log("error", e)
-    }
-  }
   
   render(){
     return (
@@ -159,6 +54,7 @@ class App extends Component {
   }
   /*
   render() {
+    //if (this.state.loading) return null;
     return (
       <View style={{flex:1}}>
         {this.state.signedIn ? (
@@ -173,21 +69,6 @@ class App extends Component {
 
 export default App;
 
-const LoginPage = props => {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={styles.header}>Sign In With Google</Text>
-      <Button
-        title="Sign in with Google" 
-        onPress={() => props.signIn()}
-        //size={GoogleSigninButton.Size.Wide}
-        //color={GoogleSigninButton.Color.Dark}
-        //disabled={this.state.isSigninInProgress}
-      >
-      </Button>
-    </View>
-  )
-}
 
 const SlidePanel = props => {
   state = userData;
@@ -210,9 +91,17 @@ const SlidePanel = props => {
             <CustomText fontFamily='Roboto' fontWeight='Bold' style={styles.text2}>{state.email}</CustomText>
           </View>
         </View>
-        <View style={{flex: 1, marginLeft: 0, marginTop: 10}}>
+        <View style={{marginLeft: 0, marginTop: 10}}>
           <DrawerNavigatorItems {...props} />
         </View>
+
+        <TouchableOpacity
+          style={{marginLeft: 10, marginTop: 15}}
+          onPress={() => {firebase.auth().signOut().then(console.log(firebase.auth().currentUser.uid))}}
+        >
+          <Text style={{fontSize: 20}}>Logout</Text>
+        </TouchableOpacity>
+        
         <Text style={styles.build}>Build: {state.buildNum}</Text>
       </View>
     </View>
@@ -221,6 +110,13 @@ const SlidePanel = props => {
 
 const MyStackNavigator = createStackNavigator(
   {
+    SignIn : { 
+      screen: SignInScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false
+      }
+    },
     Home : { 
       screen: HomeScreen,
       navigationOptions: {
@@ -237,7 +133,7 @@ const MyStackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'SignIn',
     headerMode: 'none'
   }
 );
@@ -245,10 +141,11 @@ const MyStackNavigator = createStackNavigator(
 const MyDrawerNavigator = createDrawerNavigator(
   {
     Home: { screen: MyStackNavigator },
+    /*
     Favorites: { screen: MyStackNavigator },
     Reviews: { screen: MyStackNavigator },
     Setting: { screen: MyStackNavigator },
-    Logout: { screen: MyStackNavigator }
+    Logout: { screen: MyStackNavigator }*/
   },
   {
     initialRouteName: 'Home',

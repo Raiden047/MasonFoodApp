@@ -13,77 +13,101 @@ class Review extends PureComponent {
         this.state = {
             votes: 0,
             upVoted: false,
-            downVoted: false
+            downVoted: false,
+            userId: '',
+            path: '',
         };
     }
 
     upVote = () => {
         var votes = this.state.votes;
+        var upVoted = this.state.upVoted;
+        var downVoted = this.state.downVoted;
         if(!this.state.upVoted) {
             this.state.downVoted === true ? votes += 2 : votes += 1;
-            this.setState({ upVoted: true });
-            this.setState({ downVoted: false });
+            upVoted = true;
+            downVoted = false;
         }
         else{
             votes -= 1;
-            this.setState({ upVoted: false });
+            upVoted = false;
         }
         
-        this.updateVotes(votes);
+        this.updateVotes(votes, upVoted, downVoted);
         this.setState({votes: votes});
+        this.setState({upVoted: upVoted});
+        this.setState({downVoted: downVoted});
     }
 
     downVote = () => {
         var votes = this.state.votes;
+        var upVoted = this.state.upVoted;
+        var downVoted = this.state.downVoted;
         if(!this.state.downVoted) {
             this.state.upVoted === true ? votes -= 2 : votes -= 1;
-            this.setState({ downVoted: true });
-            this.setState({ upVoted: false });
+            upVoted = false;
+            downVoted = true;
         }
         else{
             votes += 1;
-            this.setState({ downVoted: false });
+            downVoted = false;
         }
 
-        this.updateVotes(votes);
+        this.updateVotes(votes, upVoted, downVoted);
         this.setState({votes: votes});
+        this.setState({upVoted: upVoted});
+        this.setState({downVoted: downVoted});
     }
 
-    updateVotes = (votes) => {
-        //console.log(votes);
-        firebase.database().ref(`places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}/`).update({
-            votes: votes
+    updateVotes = (votes, upVoted, downVoted) => {
+        //console.log(this.state.userId);
+        firebase.database().ref(this.state.path).update({
+            votes: votes,
+        });
+        //console.log(this.state.upVoted);
+        firebase.database().ref(`${this.state.path}/voters/${this.state.userId}/`).set({
+            upVoted: upVoted,
+            downVoted: downVoted,
+        });
+    }
+
+    hasVoted = (path, uid) => {
+        firebase.database().ref(`${path}/`).once('value', snapshot => {
+            //console.log("firsTime func: " + snapshot.hasChild('voters/'));
+            if(!snapshot.hasChild('voters/')){
+                firebase.database().ref(`${this.state.path}/voters/${uid}/`).set({
+                    upVoted: false,
+                    downVoted: false,
+                });
+            }
+            else{
+                firebase.database().ref(`${path}/voters/${uid}/`).once('value', snapshot => {
+                    this.setState({ upVoted: snapshot.val().upVoted});
+                    this.setState({ downVoted: snapshot.val().downVoted});
+                });
+            }
         });
     }
 
     componentDidMount(){
-        //console.log("pkey:" + this.props.placeKey + " dkey:" + this.props.dishKey + " rKey: " + this.props.reviewKey);
-        firebase.database().ref(`places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}/`).once('value', snapshot => {
+        const path = `places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}/`;
+        //console.log(path);
+        this.setState({ path: path });
+        firebase.database().ref(path).once('value', snapshot => {
             this.setState({votes: snapshot.val().votes});
         });
-    }
+        var uid = firebase.auth().currentUser.uid;
 
-    setName = (name) => {
-        return name;
-    }
-
-    setImage = (image) => {
-        return image;
-    }
-
-    setRating = (rating) => {
-        return rating;
-    }
-
-    setText = (text) => {
-        return text;
+        this.setState({userId: uid});
+ 
+        this.hasVoted(path, uid);
     }
     
     render() {
-        const name = this.setName(this.props.name);
-        const profileImage = this.setImage(this.props.image);
-        const rating = this.setRating(this.props.rating);
-        const text = this.setText(this.props.text);
+        const name = this.props.name;
+        const profileImage = this.props.image;
+        const rating = this.props.rating;
+        const text = this.props.text;
         return (
             <View style={{flexDirection: 'row', width: scale(390), marginVertical: 10}}>
                 <Image 

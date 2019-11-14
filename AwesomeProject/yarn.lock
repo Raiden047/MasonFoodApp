@@ -4779,6 +4779,13 @@ react-dom@16.8.3:
     prop-types "^15.6.2"
     scheduler "^0.13.3"
 
+react-google-button@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/react-google-button/-/react-google-button-0.5.3.tgz#d8c76328e51b55f2835a4ebe23817906dac6a4f8"
+  integrity sha512-2xiECMLZ2qUbMtYq7fjwi/8WEVpLI5UuZLPGJzVkpcGOq/hdY5tqx8AXWUqI7QOgb9mG48/UG67kOzTgab+NUw==
+  dependencies:
+    prop-types "^15.5.8"
+
 react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.6:
   version "16.11.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.11.0.tgz#b85dfecd48ad1ce469ff558a882ca8e8313928fa"
@@ -4811,6 +4818,13 @@ react-native-gesture-handler@~1.3.0:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
     prop-types "^15.5.10"
+
+react-native-google-button@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-button/-/react-native-google-button-0.1.0.tgz#2645e0d9e7c8384cec391db94d7e2c6233287bd0"
+  integrity sha512-1vdaQlk8u6sswKqFT389aSAzsvXM+tqL1cy+11XKH3nfgE90ERRQF9zs0Y8wAtqiq/GBByGWScigMw5m1TQang==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-google-signin@^2.1.0:
   version "2.1.0"
