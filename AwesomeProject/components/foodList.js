@@ -1,5 +1,5 @@
 import React, {Component, PureComponent} from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, FlatList} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, FlatList, AsyncStorage} from 'react-native';
 import * as firebase from 'firebase';
 
 import { scale } from './scaling' 

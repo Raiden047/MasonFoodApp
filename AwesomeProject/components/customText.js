@@ -19,7 +19,8 @@ class CustomText extends Component {
             'Raleway-Regular': require('../assets/fonts/Raleway-Regular.ttf'),
 
             'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf')
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+            'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf')
         });
 
         this.setState({ fontLoaded: true });

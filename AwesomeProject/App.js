@@ -1,10 +1,12 @@
 //need to npm install react-naviation drawer and react naviagtion
 import React, {Component} from 'react';
-import { StyleSheet, Image, View, Text, Button, YellowBox } from 'react-native';
+import { StyleSheet, Image, View, Text, YellowBox } from 'react-native';
+import {Icon} from 'react-native-elements';
 import { createDrawerNavigator, DrawerNavigatorItems} from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 
+import * as Google from 'expo-google-app-auth';
 import * as firebase from 'firebase';
 import ApiKeys from './constants/ApiKeys'
 
@@ -15,9 +17,9 @@ import StatusOSbar from './components/statusBar'
 import CustomText from './components/customText'
 import {scale} from './components/scaling'
 //import {StatusOSbar, CustomText, scale, Images} from './components'
-import Images from './components/images'
+//import Images from './components/images'
 
-const userData = require('./data/user_info.json');
+//const userData = require('./data/user_info.json');
 
 import _ from 'lodash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -39,17 +41,38 @@ class App extends Component {
       authenticated: false,
       signedIn: false,
       name: "",
-      first_name: "",
+      first_name: "fahad",
       last_name: "",
-      photoUrl: ""
+			photoUrl: "",
+			email: ''
     }
 
     if (!firebase.apps.length) { firebase.initializeApp(ApiKeys.FirebaseConfig); }
-  }
+	}
+
+	componentDidMount = () => {
+	}
+
+	updateState = (first_name, last_name, email, photoUrl) => {
+		this.setState({
+			first_name: first_name,
+			last_name: last_name,
+			email: email,
+			photoUrl: photoUrl
+    })
+	}
   
   render(){
     return (
-      <MyApp />
+      <MyApp 
+        screenProps={{
+          first_name:this.state.first_name, 
+          last_name: this.state.last_name, 
+					photoUrl: this.state.photoUrl,
+					email: this.state.email,
+					updateState: this.updateState
+				}}
+      />
     )
   }
   /*
@@ -70,8 +93,8 @@ class App extends Component {
 export default App;
 
 
-const SlidePanel = props => {
-  state = userData;
+const SlidePanel = (props) => {
+	//state = userData;
 
   return(
     <View style={styles.drawerPanel}>
@@ -82,27 +105,34 @@ const SlidePanel = props => {
         <View style={styles.profileInfo}>
           <Image 
             style={styles.profileIcon}
-            source={Images.profile_image}
+            source={{uri: props.screenProps.photoUrl}}
           />
           <View style={styles.profileText}>
             <CustomText fontFamily='Raleway' fontWeight='Bold' style={styles.text1}>
-              {state.first_name} {state.last_name}
+              {props.screenProps.first_name} {props.screenProps.last_name}
             </CustomText>
-            <CustomText fontFamily='Roboto' fontWeight='Bold' style={styles.text2}>{state.email}</CustomText>
+            <CustomText fontFamily='Roboto' fontWeight='Bold' style={styles.text2}>{props.screenProps.email}</CustomText>
           </View>
         </View>
         <View style={{marginLeft: 0, marginTop: 10}}>
           <DrawerNavigatorItems {...props} />
         </View>
-
-        <TouchableOpacity
-          style={{marginLeft: 10, marginTop: 15}}
-          onPress={() => {firebase.auth().signOut().then(console.log(firebase.auth().currentUser.uid))}}
-        >
-          <Text style={{fontSize: 20}}>Logout</Text>
-        </TouchableOpacity>
+				<View style={{marginTop: scale(400)}}>
+					<TouchableOpacity 
+						style={{marginBottom: scale(40)}}
+						onPress={() => 
+						{firebase.auth().signOut().then(console.log(firebase.auth().currentUser.uid))}}
+					>
+						<Icon 
+							type='feather'
+							name='log-out'
+							color='#0287D1'
+							size={30}
+						/>
+					</TouchableOpacity>
         
-        <Text style={styles.build}>Build: {state.buildNum}</Text>
+        	<Text style={styles.build}>Build: v0.1.12</Text>
+				</View>
       </View>
     </View>
   );
@@ -114,7 +144,7 @@ const MyStackNavigator = createStackNavigator(
       screen: SignInScreen,
       navigationOptions: {
         header: null,
-        gesturesEnabled: false
+        gesturesEnabled: false,
       }
     },
     Home : { 
@@ -159,7 +189,7 @@ const MyDrawerNavigator = createDrawerNavigator(
       labelStyle: {
         paddingLeft: scale(15),
       },
-    }
+		},
   }
 );
 

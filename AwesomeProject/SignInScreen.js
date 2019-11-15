@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
-import { StyleSheet, Image, View, Text, Button} from 'react-native';
+import { StyleSheet, View, Text, Button, TouchableOpacity, Image } from 'react-native';
 
 import * as Google from 'expo-google-app-auth';
 import * as firebase from 'firebase';
+
+import {scale} from './components/scaling'
+import CustomText from './components/customText'
+import StatusOSBar from './components/statusBar'
+
+
 
 class SignInScreen extends Component {
     constructor(props){
@@ -23,9 +29,11 @@ class SignInScreen extends Component {
           function(user) {
             console.log('AUTH STATE CHANGED CALLED ');
             if (user) {
-              this.props.navigation.navigate('Home');
+                this.setState({ loading: false, authenticated: true });
+                this.props.navigation.navigate('Home');
             } else {
-              this.props.navigation.navigate('SignIn');
+                this.setState({ loading: false, authenticated: false });
+                this.props.navigation.navigate('SignIn');
             }
           }.bind(this)
         );
@@ -129,23 +137,64 @@ class SignInScreen extends Component {
     }
 
     render(){
-        return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={styles.header}>Sign In With Google</Text>
-                <Button
-                    title="Sign in with Google" 
-                    onPress={() => this.signIn()}
-                >
-                </Button>
-            </View>
-        )
+        if (this.state.loading) return null; // Render loading/splash screen etc
+        else{
+            return (
+                <View style={{flex: 1}}>
+                    <StatusOSBar />
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Image 
+                            style={{position: 'absolute', resizeMode: 'stretch', zIndex: -100}}
+                            source={require('./assets/splash_background.png')}
+                        />
+                        <Image 
+                            style={{width: scale(180), height: scale(180), aspectRatio: 1/1, position: 'absolute', top: scale(160)}}
+                            source={require('./assets/app_logo.png')}
+                        />
+
+                        <TouchableOpacity style={styles.googleButton} activeOpacity={0.8} onPress={() => this.signIn()}>
+                            <View style={{height: scale(47), aspectRatio: 1/1, marginLeft: scale(0.5), borderRadius: 2, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
+                                <Image 
+                                    source={require('./assets/google_logo.png')} 
+                                    style={styles.googleIcon} 
+                                />
+                            </View>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <CustomText fontFamily={'Roboto'} fontWeight={'Medium'} style={styles.TextStyle}>Sign in with Google</CustomText>
+                            </View>
+                        </TouchableOpacity>
+                    </View> 
+                </View>
+
+            )
+        }   
     }
 }
 
 export default SignInScreen;
 
 const styles = StyleSheet.create({
-    header: {
-        fontSize: 25
+    googleButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#4285F4',
+        borderWidth: 1,
+        borderColor: '#4285F4',
+        width: scale(240),
+        height: scale(50),
+        borderRadius: 3,
+        margin: scale(5),  
+        elevation: 5,
+    },
+    googleIcon: {
+        padding: scale(10),
+        margin: scale(5),
+        height: scale(25),
+        width: scale(25),
+        resizeMode: 'stretch',
+    },
+    TextStyle :{
+        color: "white",
+        fontSize: scale(16)
     }
 });
