@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Mason Dish Review App",
-    "slug": "AwesomeProject",
+    "slug": "mason-dish-review",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -11,7 +11,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ios_app_icon.png",
     "splash": {
       "image": "./assets/splash_page.png",
       "resizeMode": "cover",
@@ -30,11 +30,13 @@
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.1009462507431-3russs08sidpkatlctqk99i1ee0eluo4"
         }
-      }
+      },
+      "icon": "./assets/ios_app_icon.png",
     },
     "android": {
       "package": "com.gmu.masonfoodapp",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "icon": "./assets/android_app_icon.png",
   }
   }
 }
