@@ -148,7 +148,7 @@ class SignInScreen extends Component {
                             source={require('./assets/splash_background.png')}
                         />
                         <Image 
-                            style={{width: scale(180), height: scale(180), aspectRatio: 1/1, position: 'absolute', top: scale(160)}}
+                            style={{width: scale(180), height: scale(180), aspectRatio: 1/1, position: 'absolute', top: scale(120)}}
                             source={require('./assets/app_logo.png')}
                         />
 

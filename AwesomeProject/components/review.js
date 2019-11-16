@@ -73,8 +73,8 @@ class Review extends PureComponent {
 
     hasVoted = (path, uid) => {
         firebase.database().ref(`${path}/`).once('value', snapshot => {
-            //console.log("firsTime func: " + snapshot.hasChild('voters/'));
-            if(!snapshot.hasChild('voters/')){
+            //console.log("firsTime func: " + snapshot.hasChild(`voters/${uid}/`));
+            if(!snapshot.hasChild(`voters/${uid}/`)){
                 firebase.database().ref(`${this.state.path}/voters/${uid}/`).set({
                     upVoted: false,
                     downVoted: false,
@@ -90,7 +90,8 @@ class Review extends PureComponent {
     }
 
     componentDidMount(){
-        const path = `places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}/`;
+        //const path = `places/${this.props.placeKey}/dishes/${this.props.dishKey}/reviews/${this.props.reviewKey}/`;
+        const path = this.props.path;
         //console.log(path);
         this.setState({ path: path });
         firebase.database().ref(path).once('value', snapshot => {

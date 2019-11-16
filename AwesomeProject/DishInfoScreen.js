@@ -1,6 +1,6 @@
 import React, {Component, Fragment, PureComponent} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-import { AirbnbRating, Icon } from 'react-native-elements'
+import { AirbnbRating, Icon} from 'react-native-elements'
 import * as firebase from 'firebase';
 
 import BottomSheet from 'reanimated-bottom-sheet'
@@ -11,35 +11,50 @@ import CustomText from './components/customText'
 import StatusOSbar from './components/statusBar'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Review from './components/review'
+import ReviewInput from './components/reviewInput'
 
 export default class DishInfo extends PureComponent {
   constructor(props) {
     super(props);
     this.state ={
-      Dish_Rating: 0,
+      rating: 0,
       Max_Rating: 5,
-      reviews: []
+      reviews: [],
+      firstReview: true,
+      isModalVisible: false,
+      path: ''
     }
   }
 
   componentWillMount = () => {
     try{
-      const reviews = [];
+      var reviews = [];
       var placeKey = this.props.navigation.getParam('placeKey');
       var dishKey = this.props.navigation.getParam('dishKey');
+      var path = `places/${placeKey}/dishes/${dishKey}/reviews/`;
+      this.setState({path: path});
+
+      var uid = firebase.auth().currentUser.uid;
+      this.setState({userId: uid});
       //console.log("p: " + placeKey + " d: " + dishKey);
-      firebase.database().ref(`places/${placeKey}/dishes/${dishKey}/reviews/`).once('value', snapshot => {
+      firebase.database().ref(path).orderByChild('votes').once('value', snapshot => {
         //console.log(snapshot.val());
         snapshot.forEach(data => {
-            reviews.push({ 
-              name: data.val().name, 
-              profile_image: data.val().profile_image, 
-              key: data.key,
-              rating: data.val().rating,
-              text: data.val().text,
-              votes: data.val().votes
+          reviews.push({ 
+            name: data.val().name, 
+            profile_image: data.val().profile_image, 
+            key: data.key,
+            rating: data.val().rating,
+            text: data.val().text,
+            votes: data.val().votes
           });
+          var key = data.key;
+          if(key === uid){
+            this.setState({rating: data.val().rating});
+            this.setState({firstReview: false});
+          }
         });
+        reviews = reviews.reverse();
         this.setState({reviews: reviews});
       });
     }
@@ -72,6 +87,7 @@ export default class DishInfo extends PureComponent {
             initialNumToRender={2}
             maxToRenderPerBatch={1}
             ListEmptyComponent={this.listEmptyComponent}
+            extraData={this.state.reviews}
           />
         </Fragment>
       </View>
@@ -79,8 +95,10 @@ export default class DishInfo extends PureComponent {
   }
 
   renderItem = ({ item }) => {
-    placeKey = this.props.navigation.getParam('placeKey');
-    dishKey = this.props.navigation.getParam('dishKey');
+    //placeKey = this.props.navigation.getParam('placeKey');
+    //dishKey = this.props.navigation.getParam('dishKey');
+    path = `${this.state.path}${item.key}/`; 
+    //console.log(path);
     return (
       <Review 
         name={item.name} 
@@ -88,9 +106,10 @@ export default class DishInfo extends PureComponent {
         rating={item.rating} 
         text={item.text} 
         votes={item.votes}
-        placeKey={placeKey}
-        dishKey={dishKey}
-        reviewKey={item.key}
+        //placeKey={placeKey}
+        //dishKey={dishKey}
+        //reviewKey={item.key}
+        path={path}
       >
       </Review>
     )
@@ -105,8 +124,46 @@ export default class DishInfo extends PureComponent {
             />
         </View>
     )
-}
+  }
 
+  discardReview = () => {
+    var uid = this.state.userId;
+    firebase.database().ref(`${this.state.path}/`).once('value', snapshot => {
+      //console.log("firsTime rev: " + !snapshot.hasChild(`${this.state.userId}/`));
+      if(snapshot.hasChild(`${this.state.userId}/`)){
+        //console.log(snapshot.child(uid).child('rating').val());
+        this.setState({rating: snapshot.child(uid).child('rating').val()});
+      }
+      else{
+        this.setState({rating: 0});
+      }
+    });
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+  }
+
+  upDateReviews = () => {
+    var reviews = [];
+    firebase.database().ref(this.state.path).orderByChild('votes').once('value', snapshot => {
+      //console.log(snapshot.val());
+      snapshot.forEach(data => {
+        reviews.push({ 
+          name: data.val().name, 
+          profile_image: data.val().profile_image, 
+          key: data.key,
+          rating: data.val().rating,
+          text: data.val().text,
+          votes: data.val().votes
+        });
+      });
+      reviews = reviews.reverse();
+      this.setState({reviews: reviews});
+    });
+  }
+
+  toggleModal = (data) => {
+    this.setState({rating: data});
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
  
   render() {
     const dish = this.props.navigation.getParam('dishInfo');
@@ -150,21 +207,35 @@ export default class DishInfo extends PureComponent {
                 onLayout={event => {this.state.BottomHeight = event.nativeEvent.layout.y;} }>
                 <AirbnbRating 
                   count={this.state.Max_Rating}
+                  ratingCount={this.state.rating}
                   showRating={false}
-                  defaultRating={this.state.Dish_Rating}
+                  defaultRating={this.state.rating}
                   size={50}
+                  onFinishRating={this.toggleModal}
                 />
               </View>
             </View>
           </View>
 
         </View>
+        
         <BottomSheet
           initialSnap={2}
           snapPoints={[scale(495), scale(280), scale(180)]}
           renderHeader={this.renderHeader}
           renderContent={this.renderContent}
         />
+
+        <ReviewInput 
+          showModal={this.state.isModalVisible} 
+          toggleModal={this.toggleModal} 
+          path={this.state.path}
+          rating={this.state.rating}
+          discard={this.discardReview}
+          refreash={this.upDateReviews}
+        />
+
+        
       </View>
     );
   }
@@ -251,4 +322,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#00000040',
     marginBottom: scale(10),
   },
+  content: {
+    backgroundColor: 'white',
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  }
 });

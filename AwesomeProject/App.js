@@ -5,8 +5,8 @@ import {Icon} from 'react-native-elements';
 import { createDrawerNavigator, DrawerNavigatorItems} from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
+import { Provider as PaperProvider } from 'react-native-paper';
 
-import * as Google from 'expo-google-app-auth';
 import * as firebase from 'firebase';
 import ApiKeys from './constants/ApiKeys'
 
@@ -64,6 +64,7 @@ class App extends Component {
   
   render(){
     return (
+			<PaperProvider>
       <MyApp 
         screenProps={{
           first_name:this.state.first_name, 
@@ -73,6 +74,7 @@ class App extends Component {
 					updateState: this.updateState
 				}}
       />
+			</PaperProvider>
     )
   }
   /*
@@ -114,12 +116,12 @@ const SlidePanel = (props) => {
             <CustomText fontFamily='Roboto' fontWeight='Bold' style={styles.text2}>{props.screenProps.email}</CustomText>
           </View>
         </View>
-        <View style={{marginLeft: 0, marginTop: 10}}>
+        <View style={{marginLeft: 0, marginTop: scale(30)}}>
           <DrawerNavigatorItems {...props} />
         </View>
 				<View style={{marginTop: scale(400)}}>
 					<TouchableOpacity 
-						style={{marginBottom: scale(40)}}
+						style={{marginBottom: scale(120)}}
 						onPress={() => 
 						{firebase.auth().signOut().then(console.log(firebase.auth().currentUser.uid))}}
 					>
