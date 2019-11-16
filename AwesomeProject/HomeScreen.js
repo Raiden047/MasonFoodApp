@@ -11,8 +11,6 @@ import {scale} from './components/scaling'
 
 //import Images from './components/images'
 
-//const userData = require('./data/user_info.json');
-
 class HomeScreen extends PureComponent {
   constructor(props) {
     super(props);

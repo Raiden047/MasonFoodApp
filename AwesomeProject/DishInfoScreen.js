@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   dishInfo: {
     flex: 1,
     width: '100%',
-    top: -50,
+    top: scale(-50),
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     backgroundColor: 'rgba(230, 232, 255, 1)'

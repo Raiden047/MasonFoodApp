@@ -16,10 +16,6 @@ import DishInfoScreen from './DishInfoScreen'
 import StatusOSbar from './components/statusBar'
 import CustomText from './components/customText'
 import {scale} from './components/scaling'
-//import {StatusOSbar, CustomText, scale, Images} from './components'
-//import Images from './components/images'
-
-//const userData = require('./data/user_info.json');
 
 import _ from 'lodash';
 import { TouchableOpacity } from 'react-native-gesture-handler';

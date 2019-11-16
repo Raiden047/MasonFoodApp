@@ -111,11 +111,16 @@ class SignInScreen extends Component {
 
     signIn = async () => {
     try {
+        //old has for andriod key
+        //B2:11:6A:61:F3:C7:8A:7A:3D:8E:42:BA:B4:78:BF:66:99:54:A4:93
+        //old reserved client id
+        //com.googleusercontent.apps.1009462507431-3russs08sidpkatlctqk99i1ee0eluo4
         const result = await Google.logInAsync({
-        behavoir: 'system',
-        androidClientId:
-            "1009462507431-khpn1hiufi0e2ha34p2hc7u2goflgr8d.apps.googleusercontent.com",
+        behavoir: 'web',
+        androidClientId: "1009462507431-khpn1hiufi0e2ha34p2hc7u2goflgr8d.apps.googleusercontent.com",
+        androidStandaloneAppClientId: "1009462507431-khpn1hiufi0e2ha34p2hc7u2goflgr8d.apps.googleusercontent.com",
         iosClientId: "1009462507431-kbi6pn012c9gue233a6npdeoikkhujfu.apps.googleusercontent.com",
+        iosStandaloneAppClientId: "1009462507431-kbi6pn012c9gue233a6npdeoikkhujfu.apps.googleusercontent.com",
         scopes: ["profile", "email"]
         })
 
