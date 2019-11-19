@@ -11,7 +11,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/ios_app_icon.png",
+    "icon": "./assets/ios_app_icon.jpg",
     "splash": {
       "image": "./assets/splash_page.png",
       "resizeMode": "cover",
@@ -24,17 +24,17 @@
       "assets/*"
     ],
     "ios": {
+      "icon": "./assets/ios_app_icon.jpg",
       "supportsTablet": true,
-      "bundleIdentifier": "com.gmu.masonfoodapp",
+      "bundleIdentifier": "host.exp.exponent",
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.1009462507431-kbi6pn012c9gue233a6npdeoikkhujfu"
         }
-      },
-      "icon": "./assets/ios_app_icon.png"
+      }
     },
     "android": {
-      "package": "com.gmu.masonfoodapp",
+      "package": "host.exp.exponent",
       "googleServicesFile": "./google-services.json",
       "icon": "./assets/andriod_app_icon.png",
       "config": {
