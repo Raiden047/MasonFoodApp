@@ -15,7 +15,7 @@
     "expo-app-auth": "^7.0.0",
     "expo-google-app-auth": "^7.0.0",
     "expo-google-sign-in": "~7.0.0",
-    "firebase": "^7.3.0",
+    "firebase": "^12.13.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-google-button": "^0.5.3",
